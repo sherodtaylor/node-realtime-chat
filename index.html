@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Index</title>
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function(){
+        var socket = io.connect(document.URL);
+        $('#chat-form').hide();
+        $('#join-submit').on('click', function(that){
+          that.preventDefault();
+          $('#chat-form').show();
+          socket.emit('join', $('#join-input').val());
+          $('#join-form').hide();
+          $('#chat-submit').on('click', function(that){
+            that.preventDefault();
+            var msg = $('#chat-input').val();
+            socket.emit('chat', msg);
+            msg = "";
+          });
+          socket.on('chat-update', function( sender, message){
+            $('#chat').append('<li><span>' + sender + ': ' + '</span><span>' + message + '</span></li>');
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="chat">
+    </div>
+    <form id="join-form" action="" method="get" accept-charset="utf-8">
+      <input type="text" id="join-input" />
+      <button id="join-submit" type="button">Enter</button>
+    </form>
+    <br />
+    <form id="chat-form" action="" method="get" accept-charset="utf-8">
+      <input type="text" id="chat-input" />
+      <button id="chat-submit" type="submit">Enter</button>
+    </form>
+  </body>
+</html>
