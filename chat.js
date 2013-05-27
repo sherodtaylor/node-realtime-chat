@@ -3,7 +3,10 @@ var express = require('express')()
   , io = require('socket.io').listen(server)
   , clients = [];
 
-server.listen(1234);
+var port = process.env.PORT || 5000;
+server.listen(port, function() {
+  console.log("Listening on " + port);
+});
 
 express.get('/', function (req, res) {
   res.sendfile(__dirname + '/index.html');
