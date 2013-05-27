@@ -8,6 +8,11 @@ server.listen(port, function() {
   console.log("Listening on " + port);
 });
 
+io.configure(function () {
+  io.set("transports", ["xhr-polling"]);
+  io.set("polling duration", 10);
+});
+
 express.get('/', function (req, res) {
   res.sendfile(__dirname + '/index.html');
 });
